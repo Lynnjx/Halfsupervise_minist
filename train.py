@@ -22,6 +22,10 @@ def train_supervised_model(labeled_indices, epochs=20, device=None, train_datase
     train_losses = []
     test_accuracies = []
     
+    best_accuracy = 0.0
+    os.makedirs('pth', exist_ok=True)
+    save_path = os.path.join('pth', f'best_supervise_label_model_{len(labeled_indices)}.pth')
+    
     print(f"训练监督模型 (标注样本: {len(labeled_indices)})")
     
     for epoch in range(epochs):
@@ -62,9 +66,10 @@ def train_supervised_model(labeled_indices, epochs=20, device=None, train_datase
         if (epoch + 1) % 5 == 0:
             print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, Test Accuracy: {accuracy:.2f}%')
             
-        os.makedirs('pth', exist_ok=True)
-        save_path = os.path.join('pth', f'supervise_label_model_{len(labeled_indices)}.pth')
-        torch.save(model.state_dict(), save_path)
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), save_path)
+            print(f'Epoch {epoch+1}: 新的最优模型已保存，准确率: {accuracy:.2f}%')
     
     return model, train_losses, test_accuracies
 
@@ -86,6 +91,11 @@ def pseudo_label_training(labeled_indices, unlabeled_indices, epochs=30, thresho
     
     train_losses = []
     test_accuracies = []
+    
+    best_accuracy = 0.0
+    
+    os.makedirs('pth', exist_ok=True)
+    save_path = os.path.join('pth', f'best_pseudo_label_model_{len(labeled_indices)}.pth')
     
     print(f"伪标签训练 (标注: {len(labeled_indices)}, 无标签: {len(unlabeled_indices)})")
     
@@ -171,8 +181,10 @@ def pseudo_label_training(labeled_indices, unlabeled_indices, epochs=30, thresho
         if (epoch + 1) % 10 == 0:
             print(f'Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, Test Accuracy: {accuracy:.2f}%')
             
-        os.makedirs('pth', exist_ok=True)
-        save_path = os.path.join('pth', f'pseudo_label_model_{len(labeled_indices)}.pth')
-        torch.save(model.state_dict(), save_path)
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), save_path)
+            print(f'Epoch {epoch+1}: 新的最优模型已保存，准确率: {accuracy:.2f}%')
+        
     
     return model, train_losses, test_accuracies

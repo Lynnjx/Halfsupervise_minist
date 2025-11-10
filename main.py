@@ -106,7 +106,8 @@ def run_complete_experiment():
         
         # 1. 监督基线
         print("\n1. 训练监督基线模型...")
-        supervised_model, _, _ = train_supervised_model(labeled_indices, epochs=20)
+        supervised_model, _, _ = train_supervised_model(labeled_indices, epochs=20,device=device,
+                                                        train_dataset=train_dataset, test_dataset=test_dataset)
         sup_accuracy, sup_f1, sup_cm, _, _ = evaluate_model(supervised_model, test_loader)
         
         results['scenario'].append(scenario_name)
@@ -119,7 +120,8 @@ def run_complete_experiment():
         
         # 2. 伪标签方法
         print("\n2. 训练伪标签模型...")
-        pseudo_model, _, _ = pseudo_label_training(labeled_indices, unlabeled_indices, epochs=30)
+        pseudo_model, _, _ = pseudo_label_training(labeled_indices, unlabeled_indices, epochs=30, device=device,
+                                                    train_dataset=train_dataset, test_dataset=test_dataset)
         pseudo_accuracy, pseudo_f1, pseudo_cm, _, _ = evaluate_model(pseudo_model, test_loader)
         
         results['scenario'].append(scenario_name)
