@@ -181,7 +181,7 @@ def visualize_results(results_df):
     plt.grid(True, alpha=0.3)
     
     # 3. 性能提升分析
-    """ plt.subplot(2, 2, 3)
+    plt.subplot(2, 2, 3)
     baseline_acc = results_df[results_df['method'] == '监督基线']['accuracy'].values
     pseudo_acc = results_df[results_df['method'] == '伪标签']['accuracy'].values
     
@@ -194,7 +194,7 @@ def visualize_results(results_df):
     plt.grid(True, alpha=0.3)
     
     for i, v in enumerate(improvement):
-        plt.text(i, v + 0.5, f"{v:.1f}%", ha='center') """
+        plt.text(i, v + 0.5, f"{v:.1f}%", ha='center')
     
     # 4. 标注样本数量与准确率关系
     
