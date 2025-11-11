@@ -198,7 +198,7 @@ def visualize_results(results_df):
     
     # 4. 标注样本数量与准确率关系
     
-    plt.subplot(2, 2, 3)
+    plt.subplot(2, 2, 4)
     for method in methods:
         method_data = results_df[results_df['method'] == method]
         if not method_data.empty:
